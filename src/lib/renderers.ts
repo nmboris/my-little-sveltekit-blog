@@ -12,11 +12,17 @@ export interface MyRerenderers extends Renderers {
 }
 
 export const customRenderers = {
-    link: LinkComponent,
-    triplePlus: HelloComponent,
-    code: CodeComponent
+    link: LinkComponent,    // Fixes a marked/sveltekit <a> link problem by adding the a-tag property 'data-sveltekit-reload'
+    triplePlus: HelloComponent, // Example how to add a custom renderer
+    code: CodeComponent // Replaces the default code renderer with a custom one using prismjs for syntax highlighting
 } as Partial<MyRerenderers>;
 
+
+/**
+ * Tokenizer extension for triple plus
+ * Just an example how to add custom tokenizers
+ * Renders a dummy HelloComponent
+ */
 export const triplePlusTokenizer = {
     name: 'triplePlus',
     level: 'block',

@@ -3,13 +3,19 @@ import type { Renderers } from "svelte-markdown";
 
 import HelloComponent from "./components/Hello.svelte";
 import LinkComponent from "./components/Link.svelte";
+import CodeComponent from "./components/Code.svelte";
 
-export interface MyRererers extends Renderers {
+export interface MyRerenderers extends Renderers {
     triplePlus: typeof HelloComponent;
     link: typeof LinkComponent;
+    code: typeof CodeComponent;
 }
 
-export const customRenderers = { link: LinkComponent, triplePlus: HelloComponent } as Partial<MyRererers>;
+export const customRenderers = {
+    link: LinkComponent,
+    triplePlus: HelloComponent,
+    code: CodeComponent
+} as Partial<MyRerenderers>;
 
 export const triplePlusTokenizer = {
     name: 'triplePlus',
@@ -31,9 +37,15 @@ export const triplePlusTokenizer = {
     }
 } as marked.TokenizerExtension;
 
-
-
+/**
+ * Transforms github wiki links to markdown links
+ * @param markdown markdown text to be processed
+ * @returns markdown text with transformed github wiki links
+ */
 export const replaceGithubWikiLinks = (markdown: string) => {
+    // TODO: add support for images
+    // TODO: Find reference for credit
+
     // github supports [[...]] declaration of links. find all of them
     return markdown.replace(/\[\[([^\]]+)\]\]/g, function (allPattern, link) {
 

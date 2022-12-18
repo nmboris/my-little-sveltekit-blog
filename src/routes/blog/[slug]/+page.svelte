@@ -4,21 +4,30 @@
 	import { marked } from 'marked';
 	import { customRenderers, replaceGithubWikiLinks, triplePlusTokenizer } from '@lib/renderers';
 
+	// Styles for the code bocks prepared in the customRenderers component Code.svelte
+	import '@src/lib/prism-themes/shades-of-purple.css';
+	// import 'prismjs/themes/prism-okaidia.min.css';
+
+	// Grab the blog post data preoared by the server side
 	export let data: BlogpostMetadata;
 
+	// Desctructure the relevant content data
 	const { slug, src, meta } = data;
+
+	// Configure marked
 	const options = marked.defaults;
+	marked.use({
+		extensions: [triplePlusTokenizer]
+	});
 
-	marked.use({ extensions: [triplePlusTokenizer] });
-
-	console.log(':: rendering page for slug: ', slug);
-
+	// Fix wiki link links by replacing [[link]] with [link](/wiki/link)
 	$: wikiFixSrc = replaceGithubWikiLinks(src);
 </script>
 
 <div class="markdown-content">
 	<h1>{meta.title}</h1>
 
+	<!-- <SvelteMarkdown options={marked.defaults} source={wikiFixSrc} renderers={customRenderers} /> -->
 	<SvelteMarkdown {options} source={wikiFixSrc} renderers={customRenderers} />
 
 	<div class="tags">
